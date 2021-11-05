@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="CS680 HW2-2" basedir="." default="run-test">
+<project name="CS680 HW2-2" basedir="." default="run">
     <property environment="env"/>
 
     <property name="src" location="src" />
@@ -60,6 +60,12 @@
             </testclasses>
         </junitlauncher>
 
+    </target>
+
+    <target name="run" depends="run-test">
+        <java classname="edu.umb.cs680.hw02.Calculator"
+              classpathref="classpath"
+              fork="true"/>
     </target>
 
 </project>
