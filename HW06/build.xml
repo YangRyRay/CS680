@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="CS680 HW6" basedir="." default="run-test">
+    <property environment="env"/>
+
+    <property name="src" location="src" />
+    <property name="bin" location="bin" />
+    <property name="test.src" location="test/src"/>
+    <property name="test.bin" location="test/bin"/>
+
+    <path id="classpath">
+        <pathelement location="bin" />
+        <pathelement location="test/bin" />
+        <pathelement location="${env.JUNIT}"/>
+        <fileset dir="${env.ANT_HOME}/lib" includes="*.jar"/>
+        <fileset dir="${env.JUNIT}" includes="*jupiter.api*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*jupiter.engine*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*jupiter.jupiter.params*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*apiguardian*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*opentest4j*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*platform.commons*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*platform.engine*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*platform.launcher*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*platform.runner*.jar" />
+        <fileset dir="${env.JUNIT}" includes="*platform.suite.api*.jar" />
+    </path>
+
+    <target name="init-comp">
+        <mkdir dir="${bin}"/>
+    </target>
+
+    <target name="compile" depends="init-comp">
+        <javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="**.java"/>
+        </javac>
+    </target>
+
+    <target name="init-test" depends="compile">
+        <mkdir dir="${test.bin}"/>
+    </target>
+
+    <target name="compile-test" depends="init-test">
+
+        <javac srcdir="${test.src}" destdir="${test.bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="**Test.java"/>
+        </javac>
+    </target>
+
+    <target name="run-test" depends="compile-test">
+
+        <junitlauncher haltOnFailure="true" printSummary="true">
+            <classpath refid="classpath" />
+            <testclasses outputdir="test">
+                <fileset dir="${test.bin}">
+                    <include name="**Test.class"/>
+                </fileset>
+                <listener type="legacy-plain" sendSysOut="true"/>
+            </testclasses>
+        </junitlauncher>
+
+    </target>
+</project>
